@@ -1,0 +1,67 @@
+vector a = {23, 47, 89, 12, 56, 34, 78, 61, 95}
+pairSize = 2
+
+if ( 2 pairs available ) --> vecSize / pairSize --> 2 or plus
+    start from top
+
+make pairs (23,47) (89,12) (56,34) (78,61) --> remaining = 95
+sort pairs (23,47) (12,89) (34,56) (61,78) --> remaining = 95
+put in a = {23, 47, 12, 89, 34, 56, 61, 78, 95}
+increment --> pairSize = pairSize * 2 --> pairSize = 4
+
+if ( 1 pair available ) --> vecSize / pairSize --> 1 or plus
+    start from top
+
+vector a = {23, 47, 12, 89, 34, 56, 61, 78, 95}
+make pairs {(23, 47), (12, 89)} {(34, 56), (61, 78)} --> remaining = 95
+sort pairs {(12, 89), (23, 47)} {(34, 56), (61, 78)} --> remaining = 95
+put in a = {12, 89, 23, 47, 34, 56, 61, 78, 95}
+increment --> pairSize = pairSize * 2 --> pairSize = 8
+
+if ( 1 pair available ) --> vecSize / pairSize --> 1 or plus
+    start from top
+
+vector a = {12, 89, 23, 47, 34, 56, 61, 78, 95}
+make pairs {(12, 89, 23, 47), (34, 56, 61, 78)} --> remaining = 95
+sort pairs {(12, 89, 23, 47), (34, 56, 61, 78)} --> remaining = 95
+put in a = {12, 89, 23, 47, 34, 56, 61, 78, 95}
+increment --> pairSize = pairSize * 2 --> pairSize = 16
+
+else 
+    return
+
+decrement (pairSize / 2) && (elSize / 2)
+
+|***********************************************************************|
+|***********************************************************************|
+
+
+(23,47) (89,12)
+
+compare pairs parts first element
+
+
+42, 7, 19, 3, 56, 23, 8, 15
+
+7 42      3 19    23 56      8 15
+3 19   7 42       8 15     23  56
+
+3 19 7 42 8 15 23 56
+
+
+|***********************************************************************|
+|***********************************************************************|
+
+42 7 | 19 3 | 56 23 | 8 15 | 17 1 | 12 9
+7 42 | 3 19 | 23 56 | 8 15 | 1 17 | 9 12 // pair 2
+3 19 | 7 42 | 8 15 | 23 56 | 9 12 | 1 17 // pair 4
+3 19 | 7 42 | 8 15 | 23 56 | 9 12 | 1 17 // pair 8
+// % 3 19 | 7 42 | 8 15 | 23 56 | 9 12 | 1 17 // pair 16 
+decrement pair --> pair 8
+elSize --> 4
+toSort.size() --> 12
+toSort.size() / elSize --> 3
+v1 = {3 19 7 42} --> 42  //refering to each vector by its last index
+v2 = {8 15 23 56} --> 56
+v3 = {9 12 1 17} --> 17
+
