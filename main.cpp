@@ -6,7 +6,7 @@
 /*   By: hait-sal <hait-sal@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/31 14:22:21 by hait-sal          #+#    #+#             */
-/*   Updated: 2024/11/17 18:55:21 by hait-sal         ###   ########.fr       */
+/*   Updated: 2024/11/24 17:01:14 by hait-sal         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -40,17 +40,25 @@ int main() {
             nbrs.push_back(58);
 
             nbrs.push_back(33);
-
-            PmergeMe::simpleSort(nbrs, 2);
-            std::cout << "<----------Final Result---------->" << std::endl;
+            std::cout << "Before : ";
             PmergeMe::print_vec(nbrs);
-            std::cout << "<----------Done---------->" << std::endl;
+            PmergeMe::simpleSort(nbrs, 2);
+            // std::cout << "<----------Final Result---------->" << std::endl;
+            std::cout << "After : ";
+            PmergeMe::print_vec(nbrs);
+            // std::cout << "<----------Done---------->" << std::endl;
         }
         catch (std::exception &e) {
             std::cerr << "Error" <<std::endl;
         }
     // }
 }
+
+/* [ 42, 7, 19, 3, 56, 23, 8, 15, 17, 1, 12, 9, 99, 58, 33 ]
+ {7 42} {3 19} {23 56} {8 15} {1 17} {9 12} {58 99} 33
+ {3 19 7 42} {8 15 23 56} {9 12 1 17} 58 99 33
+ 3 19 7 42 8 15 23 56 9 12 1 17 58 99 33
+*/
 
 
 

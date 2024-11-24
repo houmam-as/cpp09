@@ -20,13 +20,19 @@
 #include <sstream>
 #include <vector>
 #include <algorithm>
+#include <utility>
+
+typedef std::vector<int> vi;
+typedef std::vector< std::vector<int> > vvi;
+typedef std::vector< std::pair<vi, vvi::iterator > > vp;
 
 
+// template <typename VI>
 class PmergeMe {
     // private:
     public:
-        static void simpleSort(std::vector<int>& toSort, int pairSize);
-        static void print_vec(std::vector<int>& toSort);
+        static void simpleSort(vi& toSort, int pairSize);
+        static void print_vec(vi& toSort);
         // static void calculate(std::string input);
 };
 
