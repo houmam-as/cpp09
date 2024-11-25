@@ -21,10 +21,12 @@
 #include <vector>
 #include <algorithm>
 #include <utility>
+#include <deque>
 
 typedef std::vector<int> vi;
 typedef std::vector< std::vector<int> > vvi;
 typedef std::vector< std::pair<vi, vvi::iterator > > vp;
+typedef std::deque <int> di;
 
 
 // template <typename VI>

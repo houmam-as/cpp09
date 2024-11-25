@@ -108,6 +108,17 @@ vi vecToNbr(vvi& chain) {
     return ndx;
 }
 
+
+//edited in my github workspace
+// bool operator<(const vi& vec1, const vi& vec2) {
+//     return vec1.back() < vec2.back();
+// }
+
+// bool compare(const vi& vec1, const vi& vec2) {
+//     return vec1 < vec2;
+// }
+
+
 bool compare(const vi& vec1, const vi& vec2) {
     return vec1.back() < vec2.back();
 }
