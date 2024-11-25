@@ -6,7 +6,7 @@
 /*   By: hait-sal <hait-sal@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/03 17:15:24 by hait-sal          #+#    #+#             */
-/*   Updated: 2024/11/24 19:34:08 by hait-sal         ###   ########.fr       */
+/*   Updated: 2024/11/25 14:48:07 by hait-sal         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,11 +34,21 @@ void print_vvi(vvi& vect) {
 }
 
 void print_vp(vp& pend) {
+    std::cout << "pppppppppppppppppppp Start qqqqqqqqqqqqqqqqqqqqqqq" << std::endl;
     vp::iterator it = pend.begin();
     for (; it != pend.end(); ++it) {
-        PmergeMe::print_vec((*it).first);
-        std::cout << "---------------------------" << std::endl;
+        PmergeMe::print_vec(it->first);
+        std::cout << "------------- Second --------------" << std::endl;
+        if (pend.size() % 2 != 0 && *it == pend[pend.size() - 1]) {
+            std::cout << "end reached !!!" << std::endl;
+            PmergeMe::print_vec(*(it->second));
+        }
+        else
+            PmergeMe::print_vec(*(it->second));
+        std::cout << "------------- Pair Printed --------------" << std::endl;
     }
+    std::cout << "pppppppppppppppppppp End qqqqqqqqqqqqqqqqqqqqqqq" << std::endl;
+
 }
 
 void swapParts(vi& toSort, int start, int& pairSize) {
@@ -107,8 +117,7 @@ void insertPend(vvi& mainChain, vvi& pend) {
     vi ndxPend = vecToNbr(pend);
     vi::iterator it_pend = ndxPend.begin();
     for (int i = 0; it_pend != ndxPend.end(); ++it_pend) {
-        // vi::iterator it = std::lower_bound(ndxMain.begin(), ndxMain.end(), *it_pend, compare);
-        vi::iterator it = std::lower_bound(ndxMain.begin(), ndxMain.end(), *it_pend);
+        vi::iterator it = std::lower_bound(ndxMain.begin(), ndxMain.end(), *it_pend, compare);
         int pos = it - ndxMain.begin();
         ndxMain.insert(it, *it_pend);
         int ndxPnd = it_pend - ndxPend.begin();
@@ -117,24 +126,40 @@ void insertPend(vvi& mainChain, vvi& pend) {
     }
 }
 
-void increment_iterators(vvi& mainChain, int start, vp& pend) {
-    vp::iterator it_pend = pend.begin() + start;
+void increment_iterators(vvi& mainChain, vp& pend, size_t incr_nbr) {
+    vp::iterator it_pend = pend.begin();
     for (; it_pend != pend.end(); ++it_pend) {
-        if (it_pend->second != mainChain.end())
-            std::advance(it_pend->second, 1);
+        if (it_pend->second != mainChain.end()) {
+            PmergeMe::print_vec(*(it_pend->second));
+            std::advance(it_pend->second, incr_nbr);
+        }
     }
 }
 
+vi jacobsthal_diff() {
+    vi jacobDiff;
+
+    unsigned long initialNumbers[] = {1, 3, 5, 11, 21, 43, 85, 171, 341, 683, 1365, 2731, 5461, 10923, 21845, 43691, 87381, 174763, 349525, 699051, 1398101, 2796203, 5592405, 11184811, 22369621, 44739243, 89478485, 178956971, 357913941, 715827883, 1431655765, 2863311531, 5726623061, 11453246123, 22906492245, 45812984491, 91625968981, 183251937963};
+    for (size_t    i = 0; i < 30; i++)
+        jacobDiff.push_back(initialNumbers[i + 1] - initialNumbers[i]);
+    return (jacobDiff);
+}
+
 void insertPend(vvi& mainChain, vp& pend) {
-    vp::iterator it_pend = pend.begin();
-    for (; it_pend != pend.end(); ++it_pend) {
-        std::cout << "Zfffffffffffffffffffffffffffffffffffffft" << std::endl;
-        std::cout << it_pend->second - mainChain.begin()<< " || --> " << std::endl;
-        vvi::iterator it = std::lower_bound(mainChain.begin(), it_pend->second, it_pend->first, compare);
-        std::cout << "zzzzzzzffffffffffffffffffffffffffffffffffft" << std::endl;
-        mainChain.insert(it, it_pend->first);
-        int start = it_pend - pend.begin();
-        increment_iterators(mainChain, start, pend);
+    vi jacobi = jacobsthal_diff();
+    vi::iterator it_jacobi = jacobi.begin();
+    vp::iterator it_begin;
+    for (; pend.size() != 0; ++it_jacobi) {
+        if (it_jacobi != jacobi.end() && pend.size() >= (size_t)*it_jacobi)
+            it_begin = pend.begin() + *it_jacobi - 1;
+        else
+            it_begin = pend.end() - 1;
+        for (; it_begin >= pend.begin(); --it_begin) {
+            vvi::iterator it = std::lower_bound(mainChain.begin(), it_begin->second, it_begin->first, compare);
+            mainChain.insert(it, it_begin->first);
+            pend.erase(it_begin);
+        }
+        increment_iterators(mainChain, pend, *it_jacobi);
     }
 }
 
@@ -164,7 +189,7 @@ void separateChain(vvi& chain, vvi& mainChain, vvi& pend) {
     }
 }
 
-void large_pend(unsigned long chainSize, vvi& mainChain, vvi& tmp_pend, vp& pend) {
+void large_pend(vvi& mainChain, vvi& tmp_pend, vp& pend) {
     vvi::iterator it_main = mainChain.begin() + 2;
     vvi::iterator it_pend = tmp_pend.begin();
 
@@ -173,8 +198,8 @@ void large_pend(unsigned long chainSize, vvi& mainChain, vvi& tmp_pend, vp& pend
         ++it_main;
         ++it_pend;
     }
-    if (it_main == mainChain.end() && chainSize % 2 != 0)
-        pend.push_back(std::make_pair(*it_pend, it_main));
+    if (tmp_pend.size() % 2 != 0 && mainChain.size() % 2 == 0)
+        pend.push_back(std::make_pair(*it_pend, mainChain.end()));
 }
 
 void elInsert(vi& toSort, int elSize) {
@@ -186,6 +211,7 @@ void elInsert(vi& toSort, int elSize) {
         saveRemaining(toSort, remaining, elSize);
     }
     vvi mainChain;
+    mainChain.reserve(chain.size() / elSize);
     vvi tmp_pend;
     separateChain(chain, mainChain, tmp_pend);
     std::cout << "<<<<<<<<<<<<<<<<<<<< main Chain >>>>>>>>>>>>>>>>>>>>>>>>" << std::endl;
@@ -196,12 +222,12 @@ void elInsert(vi& toSort, int elSize) {
 
     vp pend;
     if (chain.size() > 3) { //insertion for a chain which is more than 3
-        large_pend(chain.size(), mainChain, tmp_pend, pend);
-        insertPend(mainChain, pend);
+        large_pend(mainChain, tmp_pend, pend);
         std::cout << "Zfffffffffffffffffffffffffffffffffffffft" << std::endl;
         std::cout << "<<<<<<<<<<<<<<<<<<<< vp Pend >>>>>>>>>>>>>>>>>>>>>>>>" << std::endl;
         print_vp(pend);
         std::cout << "<<<<<<<<<<<<<<<<<<<<<<<<<<->>>>>>>>>>>>>>>>>>>>>>>>>" << std::endl;
+        insertPend(mainChain, pend);
     }
     else //insertion for a chain which is less than 4
     {
@@ -224,8 +250,6 @@ void PmergeMe::simpleSort(vi& toSort, int pairSize) {
         const int elSize = pairSize / 2;
         if (toSort.size() / elSize == 2)
             return;
-
-        // std::cout << "coming back <-- " << pairSize << std::endl;
         elInsert(toSort, elSize);
         PmergeMe::print_vec(toSort);
 }
