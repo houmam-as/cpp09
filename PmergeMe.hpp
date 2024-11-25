@@ -27,7 +27,8 @@ typedef std::vector<int> vi;
 typedef std::vector< std::vector<int> > vvi;
 typedef std::vector< std::pair<vi, vvi::iterator > > vp;
 typedef std::deque <int> di;
-
+typedef std::vector< std::vector<int> > ddi;
+typedef std::vector< std::pair<di, ddi::iterator > > dp;
 
 // template <typename VI>
 class PmergeMe {
